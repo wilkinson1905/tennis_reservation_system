@@ -1,5 +1,7 @@
 from flask import Flask, request, abort
 import yaml
+import requests
+import json
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -10,6 +12,13 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, ImageSendMessage
 )
+
+NGROK_URL = ""
+
+def get_ngrok_url():
+    response = requests.get("http://localhost:4040/api/tunnels")
+    global NGROK_URL
+    NGROK_URL = json.loads(response.text)["tunnels"][0]["public_url"]
 
 
 app = Flask(__name__)
@@ -47,12 +56,13 @@ def handle_message(event):
     #     event.reply_token,
     #     TextSendMessage(text=event.message.text + "やで"))
     image_message = ImageSendMessage(
-        original_content_url=f"https://fae6-133-32-129-106.jp.ngrok.io/static/images/sample.jpg",
-        preview_image_url=f"https://fae6-133-32-129-106.jp.ngrok.io/static/images/sample.jpg",
+        original_content_url=f"{NGROK_URL}/static/images/sample.jpg",
+        preview_image_url=f"{NGROK_URL}/static/images/sample.jpg",
     )
     line_bot_api.reply_message(event.reply_token, image_message)
 
 
 
 if __name__ == "__main__":
+    get_ngrok_url()
     app.run()
