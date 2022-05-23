@@ -5,10 +5,10 @@ import datetime as dt
 import yaml
 
 
-def make_calendar(output_path="sample.png"):
+def make_calendar(input_yaml="calendar.yaml",output_path="sample.png"):
     image = Image.new("RGB", (500,600), "white")
     draw = ImageDraw.Draw(image)
-    with open("calendar.yaml") as f:
+    with open(input_yaml) as f:
         calendar = yaml.safe_load(f) 
     for calendar_index, year_month in enumerate(calendar.keys()):
         ## サイズの初期化
