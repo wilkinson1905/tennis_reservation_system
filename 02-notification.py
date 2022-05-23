@@ -53,13 +53,19 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    text_message = TextSendMessage(text="港北スポーツセンター")
-    make_calendar(input_yaml="calendar.yaml",output_path="static/images/sample.jpg")
-    image_message = ImageSendMessage(
-        original_content_url=f"{NGROK_URL}/static/images/sample.jpg",
-        preview_image_url=f"{NGROK_URL}/static/images/sample.jpg",
+    text_message1 = TextSendMessage(text="港北スポーツセンター")
+    make_calendar(input_yaml="calendars/kouhoku.yaml",output_path="static/images/kouhoku.jpg")
+    image_message1 = ImageSendMessage(
+        original_content_url=f"{NGROK_URL}/static/images/kouhoku.jpg",
+        preview_image_url=f"{NGROK_URL}/static/images/kouhoku.jpg",
     )
-    line_bot_api.reply_message(event.reply_token, [text_message, image_message])
+    text_message2 = TextSendMessage(text="新横浜公園")
+    make_calendar(input_yaml="calendars/yokohama.yaml",output_path="static/images/yokohama.jpg")
+    image_message2 = ImageSendMessage(
+        original_content_url=f"{NGROK_URL}/static/images/yokohama.jpg",
+        preview_image_url=f"{NGROK_URL}/static/images/yokohama.jpg",
+    )
+    line_bot_api.reply_message(event.reply_token, [text_message1, image_message1, text_message2, image_message2])
 
 
 

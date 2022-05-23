@@ -1,5 +1,7 @@
 *.pyc
+calendars/
 calendar.yaml
 MySecretConfig.yaml
 sample.jpg
 sample.png
+static/

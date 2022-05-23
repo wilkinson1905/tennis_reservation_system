@@ -66,9 +66,31 @@ while True:
         driver.find_element(By.XPATH, '//*[@id="calendar"]')
         year, month, availability_dict = get_availability_dict(driver.page_source)
         all_availability_info[f"{year}_{month}"] = availability_dict
-        with open("calendar.yaml", "w") as f:
+        with open("calendars/kouhoku.yaml", "w") as f:
             yaml.dump(all_availability_info, f)
 
+        driver.get('https://yoyaku.city.yokohama.lg.jp/')
+        ## 横浜公園のカレンダーを取得
+        driver.find_element(By.XPATH, '//*[@id="RSGK001_05"]').click()
+        driver.find_element(By.XPATH, '//*[@id="fbox_01"]').click()
+        driver.find_element(By.XPATH, '//*[@id="fbox_05"]').click()
+        driver.find_element(By.XPATH, '//*[@id="idbtn_next_page"]').click()
+        driver.find_element(By.XPATH, '//*[@id="fbox_570"]').click()
+        driver.find_element(By.XPATH, '//*[@id="fbox_00"]').click()
+        driver.find_element(By.XPATH, '//*[@id="calendar"]')
+        year, month, availability_dict = get_availability_dict(driver.page_source)
+        all_availability_info[f"{year}_{month}"] = availability_dict
+        ## 次の月を取得
+        date_now = datetime.datetime.now()
+        if date_now.month == month:
+            driver.find_element(By.XPATH, '//*[@id="FRM_RSGK305"]/div[3]/div/div/table[1]/tbody/tr/td[9]/button/img').click()
+        else:
+            driver.find_element(By.XPATH, '//*[@id="FRM_RSGK305"]/div[3]/div/div/table[1]/tbody/tr/td[1]/button/img').click()
+        driver.find_element(By.XPATH, '//*[@id="calendar"]')
+        year, month, availability_dict = get_availability_dict(driver.page_source)
+        all_availability_info[f"{year}_{month}"] = availability_dict
+        with open("calendars/yokohama.yaml", "w") as f:
+            yaml.dump(all_availability_info, f)
 
 
     except:
