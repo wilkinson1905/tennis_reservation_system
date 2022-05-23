@@ -2,6 +2,7 @@ from flask import Flask, request, abort
 import yaml
 import requests
 import json
+from make_calendar import make_calendar
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -52,14 +53,13 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    # line_bot_api.reply_message(
-    #     event.reply_token,
-    #     TextSendMessage(text=event.message.text + "やで"))
+    text_message = TextSendMessage(text="港北スポーツセンター")
+    make_calendar(input_yaml="calendar.yaml",output_path="static/images/sample.jpg")
     image_message = ImageSendMessage(
         original_content_url=f"{NGROK_URL}/static/images/sample.jpg",
         preview_image_url=f"{NGROK_URL}/static/images/sample.jpg",
     )
-    line_bot_api.reply_message(event.reply_token, image_message)
+    line_bot_api.reply_message(event.reply_token, [text_message, image_message])
 
 
 
